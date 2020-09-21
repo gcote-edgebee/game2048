@@ -36,11 +36,9 @@ export default {
       //move(direction, this.values);
       this.game.move(direction);
       this.grid = this.game.grid.serialize();
-      console.log(direction, this.game.grid.cells);
     }
   },
   mounted() {
-    console.log(this.game.grid.cells);
     window.addEventListener('keydown', event => {
       if (event.key in VALID_KEYS) {
         this.move(VALID_KEYS[event.key]);
