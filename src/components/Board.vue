@@ -12,7 +12,21 @@ import BoardTile from './BoardTile.vue';
 export default {
   name: 'Board',
   props: {
-    values: Array
+    grid: Object
+  },
+  computed: {
+    values: function() {
+      const size = this.grid.size;
+      const values = Array.apply(0, Array(size * size));
+      for (let x = 0; x < this.grid.cells.length; ++x) {
+        const vector = this.grid.cells[x];
+        for (let y = 0; y < vector.length; ++y) {
+          const tile = vector[y];
+          values[x + y * size] = tile ? tile.value : 0;
+        }
+      }
+      return values;
+    }
   },
   components: {
     BoardTile

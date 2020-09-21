@@ -1,12 +1,13 @@
 <template>
   <div id="app" v-on:keydown.left="move">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <Board :values="values" />
+    <Board :grid="grid" />
   </div>
 </template>
 
 <script>
 import Board from './components/Board.vue';
+import GameManager from './game';
 
 const VALID_KEYS = {
   ArrowLeft: 'left',
@@ -20,15 +21,26 @@ export default {
   props: {
     values: Array
   },
+  data: function() {
+    const game = new GameManager(4);
+    return {
+      game,
+      grid: game.grid.serialize()
+    };
+  },
   components: {
     Board
   },
   methods: {
     move: function(direction) {
-      console.log('KeyDown:', direction);
+      //move(direction, this.values);
+      this.game.move(direction);
+      this.grid = this.game.grid.serialize();
+      console.log(direction, this.game.grid.cells);
     }
   },
   mounted() {
+    console.log(this.game.grid.cells);
     window.addEventListener('keydown', event => {
       if (event.key in VALID_KEYS) {
         this.move(VALID_KEYS[event.key]);
