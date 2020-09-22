@@ -1,13 +1,16 @@
 <template>
   <row class="board" container :gutter="15" :columns="4">
-    <column v-for="(value, index) in values" :key="index">
-      <BoardTile :value="value"></BoardTile>
+    <column v-for="(tile, index) in tiles" :key="index">
+      <BoardTile :tile="tile"></BoardTile>
     </column>
+    <BoardTileValue v-for="tile in tileValues" :key="tile.uid" :tile="tile">
+    </BoardTileValue>
   </row>
 </template>
 
 <script>
 import BoardTile from './BoardTile.vue';
+import BoardTileValue from './BoardTileValue.vue';
 
 export default {
   name: 'Board',
@@ -15,21 +18,26 @@ export default {
     grid: Object
   },
   computed: {
-    values: function() {
-      const size = this.grid.size;
-      const values = Array.apply(0, Array(size * size));
-      for (let x = 0; x < this.grid.cells.length; ++x) {
-        const vector = this.grid.cells[x];
-        for (let y = 0; y < vector.length; ++y) {
-          const tile = vector[y];
-          values[x + y * size] = tile ? tile.value : 0;
-        }
-      }
-      return values;
+    tiles: function() {
+      return this.grid.cells.reduce((acc, vector) => {
+        return vector.reduce((acc, tile) => {
+          acc.push(tile);
+          return acc;
+        }, acc);
+      }, []);
+    },
+    tileValues: function() {
+      return this.grid.cells.reduce((acc, vector) => {
+        return vector.reduce((acc, tile) => {
+          tile && acc.push(tile);
+          return acc;
+        }, acc);
+      }, []);
     }
   },
   components: {
-    BoardTile
+    BoardTile,
+    BoardTileValue
   }
 };
 </script>

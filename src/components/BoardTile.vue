@@ -1,19 +1,14 @@
 <template>
   <div class="tile">
-    <BoardTileValue v-if="value > 0" :value="value"></BoardTileValue>
+    <!--BoardTileValue v-if="value > 0" :value="value"></BoardTileValue-->
   </div>
 </template>
 
 <script>
-import BoardTileValue from './BoardTileValue.vue';
-
 export default {
   name: 'BoardTile',
   props: {
     value: Number
-  },
-  components: {
-    BoardTileValue
   }
 };
 </script>

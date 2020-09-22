@@ -3,6 +3,7 @@ class Tile {
     this.x = position.x;
     this.y = position.y;
     this.value = value || 2;
+    this.uid = Tile.createUid();
 
     this.previousPosition = null;
     this.mergedFrom = null;
@@ -23,10 +24,16 @@ class Tile {
         x: this.x,
         y: this.y
       },
-      value: this.value
+      value: this.value,
+      uid: this.uid
     };
   }
+
+  static createUid() {
+    return `tile-${Tile.nextUid++}`;
+  }
 }
+Tile.nextUid = 0;
 
 class Grid {
   constructor(size, previousState) {
@@ -254,7 +261,7 @@ export default class Game {
 
   move(strDirection) {
     if (this.isGameTerminated()) return;
-
+    console.log("CRAP MOVR")
     const direction = MOVEMENT_STRING_TO_INT[strDirection];
 
     const vector = this.getVector(direction);
