@@ -1,6 +1,13 @@
 <template>
   <div class="tile-pos" :style="{ transform: positionStyle }">
-    <div :class="innerClass">
+    <div
+      class="tile"
+      :class="{
+        'tile-new': isNew,
+        'tile-merge': isMerge,
+        ['tile-' + value]: true
+      }"
+    >
       {{ value }}
     </div>
   </div>
@@ -12,6 +19,11 @@ export default {
   props: {
     tile: Object
   },
+  data() {
+    return {
+      isNew: true
+    };
+  },
   computed: {
     value() {
       return this.tile.value;
@@ -22,19 +34,18 @@ export default {
     y() {
       return this.tile.position.y;
     },
-    innerClass() {
-      return `tile tile-new tile-${this.value}`;
-      //return `tile tile-${this.value}`;
+    uid() {
+      return this.tile.uid;
+    },
+    isMerge() {
+      return this.tile.isMerge;
     },
     positionStyle() {
-      return `translate(${this.x * 121 + 7.5}px, ${this.y * 121 + 7.5}px)`;
+      return `translate(${this.x * 121 + 7}px, ${this.y * 121 + 7}px)`;
     }
   },
-  mounted() {
-    console.log("CRAP MOUNT:", JSON.stringify(this.tile));
-  },
-  updated() {
-    console.log("CRAP UPDAT:", JSON.stringify(this.tile));
+  beforeUpdate() {
+    this.isNew = false;
   }
 };
 </script>

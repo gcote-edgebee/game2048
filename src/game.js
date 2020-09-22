@@ -1,12 +1,13 @@
 class Tile {
-  constructor(position, value) {
+  constructor(position, value, uid) {
     this.x = position.x;
     this.y = position.y;
     this.value = value || 2;
-    this.uid = Tile.createUid();
+    this.uid = uid || Tile.createUid();
 
     this.previousPosition = null;
     this.mergedFrom = null;
+    this.isMerge = Boolean(uid);
   }
 
   savePosition() {
@@ -25,12 +26,13 @@ class Tile {
         y: this.y
       },
       value: this.value,
-      uid: this.uid
+      uid: this.uid,
+      isMerge: this.isMerge
     };
   }
 
   static createUid() {
-    return `tile-${Tile.nextUid++}`;
+    return `tile-${++Tile.nextUid}`;
   }
 }
 Tile.nextUid = 0;
@@ -261,7 +263,7 @@ export default class Game {
 
   move(strDirection) {
     if (this.isGameTerminated()) return;
-    console.log("CRAP MOVR")
+
     const direction = MOVEMENT_STRING_TO_INT[strDirection];
 
     const vector = this.getVector(direction);
@@ -279,21 +281,20 @@ export default class Game {
           const positions = this.findFarthestPosition(cell, vector);
           const next = this.grid.cellContent(positions.next);
 
+          tile.isMerge = false;
+
           // Only one merger per row traversal?
           if (next && next.value === tile.value && !next.mergedFrom) {
-            const merged = new Tile(positions.next, tile.value * 2);
+            const merged = new Tile(positions.next, tile.value * 2, tile.uid);
             merged.mergedFrom = [tile, next];
 
             this.grid.insertTile(merged);
             this.grid.removeTile(tile);
 
-            // Converge the two tiles' positions
             tile.updatePosition(positions.next);
 
-            // Update the score
             this.score += merged.value;
 
-            // The mighty 2048 tile
             if (merged.value === 2048) this.won = true;
           } else {
             this.moveTile(tile, positions.farthest);

@@ -1,6 +1,16 @@
 <template>
   <div id="app" v-on:keydown.left="move">
-    <img alt="Vue logo" src="./assets/logo.png" />
+    <div class="header">
+      <h1>2048</h1>
+      <div class="score">
+        <div class="title">score</div>
+        <div class="value">{{ score }}</div>
+      </div>
+    </div>
+    <div class="instructions">
+      <span>Join the numbers and get to the <b>2048 tile!</b></span>
+      <button>New Game</button>
+    </div>
     <Board :grid="grid" />
   </div>
 </template>
@@ -28,12 +38,16 @@ export default {
       grid: game.grid.serialize()
     };
   },
+  computed: {
+    score() {
+      return this.game.score;
+    }
+  },
   components: {
     Board
   },
   methods: {
     move: function(direction) {
-      //move(direction, this.values);
       this.game.move(direction);
       this.grid = this.game.grid.serialize();
     }
@@ -54,7 +68,59 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #776e65;
   margin-top: 60px;
+}
+h1 {
+  font-size: 80px;
+  font-weight: bold;
+  margin: 0;
+}
+button {
+  background: #8f7a66;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 500px;
+  margin: auto;
+  align-items: flex-start;
+}
+.instructions {
+  display: flex;
+  justify-content: space-between;
+  max-width: 500px;
+  margin: auto;
+  align-items: center;
+}
+
+.score {
+  display: inline-block;
+  color: white;
+  background-color: #bbada0;
+  text-transform: uppercase;
+  padding: 10px 25px 2px;
+  position: relative;
+  border-radius: 3px;
+}
+.score .title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #eee4da;
+}
+.score .value {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 25px;
 }
 </style>

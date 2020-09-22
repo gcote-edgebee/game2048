@@ -3,7 +3,16 @@
     <column v-for="(tile, index) in tiles" :key="index">
       <BoardTile :tile="tile"></BoardTile>
     </column>
-    <BoardTileValue v-for="tile in tileValues" :key="tile.uid" :tile="tile">
+    <BoardTileValue
+      v-for="tile in tileValues"
+      :key="tile.uid"
+      :tile="tile"
+      :x="tile.position.x"
+      :y="tile.position.y"
+      :value="tile.value"
+      :uid="tile.uid"
+      :isMerge="tile.isMerge"
+    >
     </BoardTileValue>
   </row>
 </template>
