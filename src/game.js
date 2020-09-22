@@ -296,7 +296,10 @@ export default class Game {
               this.bestScore = this.score;
             }
 
-            if (merged.value === 2048) this.won = true;
+            if (merged.value === 32) {
+              console.log("WHOWHWOWHWO")
+              this.won = true;
+            }
           } else {
             this.moveTile(tile, positions.farthest);
           }
@@ -356,10 +359,9 @@ export default class Game {
   }
 
   tileMatchesAvailable() {
-    for (let x = 0; x < this.size; +x) {
+    for (let x = 0; x < this.size; ++x) {
       for (let y = 0; y < this.size; ++y) {
         const tile = this.grid.cellContent({ x: x, y: y });
-
         if (tile) {
           for (let direction = 0; direction < 4; ++direction) {
             const vector = this.getVector(direction);

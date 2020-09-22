@@ -15,12 +15,22 @@
       <span>Join the numbers and get to the <b>2048 tile!</b></span>
       <button v-on:click="restart">New Game</button>
     </div>
-    <Board :grid="grid" />
+    <div class="game">
+      <Board :grid="grid" />
+      <GameOver @restart="restart" v-if="isGameOver"></GameOver>
+      <Win
+        @restart="restart"
+        @continue="keepPlaying"
+        v-if="isGameWon && !isKeepPlaying"
+      ></Win>
+    </div>
   </div>
 </template>
 
 <script>
 import Board from './components/Board.vue';
+import Win from './components/Win.vue';
+import GameOver from './components/GameOver.vue';
 import GameManager from './game';
 
 const VALID_KEYS = {
@@ -51,10 +61,21 @@ export default {
     },
     bestScore() {
       return this.game.bestScore;
+    },
+    isGameOver() {
+      return this.game.over;
+    },
+    isGameWon() {
+      return this.game.won;
+    },
+    isKeepPlaying() {
+      return this.game.keepPlaying;
     }
   },
   components: {
-    Board
+    Board,
+    Win,
+    GameOver
   },
   methods: {
     move: function(direction) {
@@ -65,6 +86,10 @@ export default {
     restart: function() {
       this.game.restart();
       this.grid = this.game.grid.serialize();
+      this.saveGame();
+    },
+    keepPlaying: function() {
+      this.game.doKeepPlaying();
       this.saveGame();
     },
     saveGame() {
@@ -151,5 +176,8 @@ button {
   font-size: 25px;
   font-weight: bold;
   line-height: 25px;
+}
+.game {
+  position: relative;
 }
 </style>
