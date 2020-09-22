@@ -6,6 +6,10 @@
         <div class="title">score</div>
         <div class="value">{{ score }}</div>
       </div>
+      <div class="score">
+        <div class="title">best score</div>
+        <div class="value">{{ bestScore }}</div>
+      </div>
     </div>
     <div class="instructions">
       <span>Join the numbers and get to the <b>2048 tile!</b></span>
@@ -32,7 +36,10 @@ export default {
     values: Array
   },
   data: function() {
-    const game = new GameManager(4);
+    const existingState = JSON.parse(
+      window.localStorage.getItem('state', null)
+    );
+    const game = new GameManager(4, existingState);
     return {
       game,
       grid: game.grid.serialize()
@@ -41,6 +48,9 @@ export default {
   computed: {
     score() {
       return this.game.score;
+    },
+    bestScore() {
+      return this.game.bestScore;
     }
   },
   components: {
@@ -50,10 +60,18 @@ export default {
     move: function(direction) {
       this.game.move(direction);
       this.grid = this.game.grid.serialize();
+      this.saveGame();
     },
     restart: function() {
       this.game.restart();
       this.grid = this.game.grid.serialize();
+      this.saveGame();
+    },
+    saveGame() {
+      window.localStorage.setItem(
+        'state',
+        JSON.stringify(this.game.serialize())
+      );
     }
   },
   mounted() {
@@ -79,6 +97,8 @@ h1 {
   font-size: 80px;
   font-weight: bold;
   margin: 0;
+  text-align: left;
+  flex-grow: 1;
 }
 button {
   background: #8f7a66;
@@ -95,17 +115,19 @@ button {
 }
 .header {
   display: flex;
-  justify-content: space-between;
   max-width: 500px;
   margin: auto;
   align-items: flex-start;
 }
+
 .instructions {
   display: flex;
   justify-content: space-between;
   max-width: 500px;
   margin: auto;
   align-items: center;
+  margin-bottom: 40px;
+  font-size: 18px;
 }
 
 .score {
@@ -117,8 +139,11 @@ button {
   position: relative;
   border-radius: 3px;
 }
+.score:nth-child(2) {
+  margin-right: 5px;
+}
 .score .title {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: bold;
   color: #eee4da;
 }

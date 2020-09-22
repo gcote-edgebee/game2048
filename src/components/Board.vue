@@ -55,6 +55,8 @@ export default {
 .board {
   max-width: 500px;
   max-height: 500px;
+  min-width: 500px;
+  min-height: 500px;
   background-color: #bbaba0;
   border-radius: 6px;
   padding: 7.5px;

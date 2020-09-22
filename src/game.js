@@ -179,19 +179,14 @@ const MOVEMENT = {
 };
 
 export default class Game {
-  constructor(size) {
+  constructor(size, existingState) {
     this.size = size;
     this.startTiles = 2;
-    this.score = 0;
-    this.over = false;
-    this.won = false;
-    this.keepPlaying = false;
-
-    this.setup();
+    this.setup(existingState);
   }
 
   restart() {
-    this.setup();
+    this.setup(null, this.bestScore);
   }
 
   doKeepPlaying() {
@@ -202,17 +197,19 @@ export default class Game {
     return this.over || (this.won && !this.keepPlaying);
   }
 
-  setup(previousState) {
+  setup(previousState, bestScore) {
     // Reload the game from a previous game if present
     if (previousState) {
       this.grid = new Grid(previousState.grid.size, previousState.grid.cells);
       this.score = previousState.score;
+      this.bestScore = previousState.bestScore;
       this.over = previousState.over;
       this.won = previousState.won;
       this.keepPlaying = previousState.keepPlaying;
     } else {
       this.grid = new Grid(this.size);
       this.score = 0;
+      this.bestScore = bestScore || 0;
       this.over = false;
       this.won = false;
       this.keepPlaying = false;
@@ -240,6 +237,7 @@ export default class Game {
     return {
       grid: this.grid.serialize(),
       score: this.score,
+      bestScore: this.bestScore,
       over: this.over,
       won: this.won,
       keepPlaying: this.keepPlaying
@@ -294,6 +292,9 @@ export default class Game {
             tile.updatePosition(positions.next);
 
             this.score += merged.value;
+            if (this.score > this.bestScore) {
+              this.bestScore = this.score;
+            }
 
             if (merged.value === 2048) this.won = true;
           } else {
