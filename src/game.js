@@ -297,7 +297,6 @@ export default class Game {
             }
 
             if (merged.value === 32) {
-              console.log("WHOWHWOWHWO")
               this.won = true;
             }
           } else {

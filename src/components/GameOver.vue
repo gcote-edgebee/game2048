@@ -2,7 +2,7 @@
   <div class="root">
     <div class="overlay">
       <p>Game over!</p>
-      <button v-on:click="restart">Try again</button>
+      <app-button :onClick="restart">Try again</app-button>
     </div>
   </div>
 </template>

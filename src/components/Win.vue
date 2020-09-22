@@ -3,8 +3,8 @@
     <div class="overlay">
       <p>You win!</p>
       <div>
-        <button v-on:click="keepGoing" class="button">Keep going</button>
-        <button v-on:click="restart" class="button">Try again</button>
+        <app-button :onClick="keepGoing" class="button">Keep going</app-button>
+        <app-button :onClick="restart" class="button">Try again</app-button>
       </div>
     </div>
   </div>

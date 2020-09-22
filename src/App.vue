@@ -13,7 +13,7 @@
     </div>
     <div class="instructions">
       <span>Join the numbers and get to the <b>2048 tile!</b></span>
-      <button v-on:click="restart">New Game</button>
+      <app-button :onClick="restart">New Game</app-button>
     </div>
     <div class="game">
       <Board :grid="grid" />
@@ -124,19 +124,6 @@ h1 {
   margin: 0;
   text-align: left;
   flex-grow: 1;
-}
-button {
-  background: #8f7a66;
-  border-radius: 3px;
-  padding: 0 20px;
-  text-decoration: none;
-  color: #f9f6f2;
-  height: 40px;
-  cursor: pointer;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
 }
 .header {
   display: flex;
