@@ -9,7 +9,7 @@
     </div>
     <div class="instructions">
       <span>Join the numbers and get to the <b>2048 tile!</b></span>
-      <button>New Game</button>
+      <button v-on:click="restart">New Game</button>
     </div>
     <Board :grid="grid" />
   </div>
@@ -49,6 +49,10 @@ export default {
   methods: {
     move: function(direction) {
       this.game.move(direction);
+      this.grid = this.game.grid.serialize();
+    },
+    restart: function() {
+      this.game.restart();
       this.grid = this.game.grid.serialize();
     }
   },
