@@ -1,15 +1,10 @@
 <template>
-  <div class="tile">
-    <!--BoardTileValue v-if="value > 0" :value="value"></BoardTileValue-->
-  </div>
+  <div class="tile"></div>
 </template>
 
 <script>
 export default {
-  name: 'BoardTile',
-  props: {
-    value: Number
-  }
+  name: 'BoardTile'
 };
 </script>
 

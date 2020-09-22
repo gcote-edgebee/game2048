@@ -1,11 +1,19 @@
 <template>
-  <div class="tile-pos" :style="{ transform: positionStyle }">
+  <div
+    class="tile-pos"
+    :style="{
+      transform: positionStyle,
+      'font-size': fontSize,
+      color: color,
+      'background-color': backgroundColor
+    }"
+  >
     <div
       class="tile"
       :class="{
         'tile-new': isNew,
         'tile-merge': isMerge,
-        ['tile-' + value]: true
+        ['tile-' + value]: false
       }"
     >
       {{ value }}
@@ -14,6 +22,20 @@
 </template>
 
 <script>
+const SIZE_TO_COLOR = {
+  2: '#eee4da',
+  4: '#ede0c8',
+  8: '#f2b179',
+  16: '#f59563',
+  32: '#f67c5f',
+  64: '#f65e3b',
+  128: '#edcf72',
+  256: '#edcc61',
+  512: '#edc850',
+  1024: '#edc53f',
+  2048: '#edc22e'
+};
+
 export default {
   name: 'BoardTile',
   props: {
@@ -42,6 +64,18 @@ export default {
     },
     positionStyle() {
       return `translate(${this.x * 121 + 7}px, ${this.y * 121 + 7}px)`;
+    },
+    fontSize() {
+      if (this.value > 64) return '45px';
+      return '55px';
+    },
+    color() {
+      if (this.value > 4) return '#f9f6f2';
+      return '#776e65';
+    },
+    backgroundColor() {
+      if (this.value in SIZE_TO_COLOR) return SIZE_TO_COLOR[this.value];
+      return '#3c3a32';
     }
   },
   beforeUpdate() {
@@ -60,12 +94,9 @@ export default {
 }
 .tile {
   font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
-  color: #776e65;
-  background-color: #eee4da;
   border-radius: 3px;
   font-weight: bold;
   text-align: center;
-  font-size: 55px;
   width: 107px;
   height: 107px;
   line-height: 107px;
@@ -98,37 +129,5 @@ export default {
   100% {
     transform: scale(1);
   }
-}
-.tile.tile-2 {
-  background-color: #eee4da;
-}
-.tile.tile-4 {
-  background-color: #ede0c8;
-}
-.tile.tile-8 {
-  color: #f9f6f2;
-  background: #f2b179;
-}
-.tile.tile-16 {
-  color: #f9f6f2;
-  background: #f59563;
-}
-.tile.tile-32 {
-  color: #f9f6f2;
-  background: #f67c5f;
-}
-.tile.tile-64 {
-  color: #f9f6f2;
-  background: #f65e3b;
-}
-.tile.tile-128 {
-  color: #f9f6f2;
-  background: #edcf72;
-  font-size: 45px;
-}
-.tile.tile-256 {
-  color: #f9f6f2;
-  background: #edcc61;
-  font-size: 45px;
 }
 </style>

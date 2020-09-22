@@ -2,14 +2,8 @@
   <div id="app" v-on:keydown.left="move">
     <div class="header">
       <h1>2048</h1>
-      <div class="score">
-        <div class="title">score</div>
-        <div class="value">{{ score }}</div>
-      </div>
-      <div class="score">
-        <div class="title">best score</div>
-        <div class="value">{{ bestScore }}</div>
-      </div>
+      <Score>{{ score }}</Score>
+      <Score title="best score">{{ bestScore }}</Score>
     </div>
     <div class="instructions">
       <span>Join the numbers and get to the <b>2048 tile!</b></span>
@@ -29,6 +23,7 @@
 
 <script>
 import Board from './components/Board.vue';
+import Score from './components/Score.vue';
 import Win from './components/Win.vue';
 import GameOver from './components/GameOver.vue';
 import GameManager from './game';
@@ -74,6 +69,7 @@ export default {
   },
   components: {
     Board,
+    Score,
     Win,
     GameOver
   },
@@ -97,14 +93,18 @@ export default {
         'state',
         JSON.stringify(this.game.serialize())
       );
-    }
-  },
-  mounted() {
-    window.addEventListener('keydown', event => {
+    },
+    handleKeyDown(event) {
       if (event.key in VALID_KEYS) {
         this.move(VALID_KEYS[event.key]);
       }
-    });
+    }
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 };
 </script>
@@ -118,18 +118,20 @@ export default {
   color: #776e65;
   margin-top: 60px;
 }
-h1 {
-  font-size: 80px;
-  font-weight: bold;
-  margin: 0;
-  text-align: left;
-  flex-grow: 1;
-}
+
 .header {
   display: flex;
   max-width: 500px;
   margin: auto;
   align-items: flex-start;
+}
+
+.header h1 {
+  font-size: 80px;
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+  flex-grow: 1;
 }
 
 .instructions {
@@ -142,28 +144,10 @@ h1 {
   font-size: 18px;
 }
 
-.score {
-  display: inline-block;
-  color: white;
-  background-color: #bbada0;
-  text-transform: uppercase;
-  padding: 10px 25px 2px;
-  position: relative;
-  border-radius: 3px;
-}
 .score:nth-child(2) {
   margin-right: 5px;
 }
-.score .title {
-  font-size: 11px;
-  font-weight: bold;
-  color: #eee4da;
-}
-.score .value {
-  font-size: 25px;
-  font-weight: bold;
-  line-height: 25px;
-}
+
 .game {
   position: relative;
 }

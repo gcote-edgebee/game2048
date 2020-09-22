@@ -33,7 +33,7 @@ export default {
   left: 0;
   text-align: center;
   z-index: 100;
-  animation: appear 900ms ease 1000ms;
+  animation: appear 900ms ease 900ms;
   animation-fill-mode: both;
 }
 .button {

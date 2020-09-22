@@ -1,19 +1,13 @@
 <template>
   <row class="board" container :gutter="15" :columns="4">
     <column v-for="(tile, index) in tiles" :key="index">
-      <BoardTile :tile="tile"></BoardTile>
+      <BoardTile :tile="tile" />
     </column>
     <BoardTileValue
-      v-for="tile in tileValues"
+      v-for="tile in tilesWithValue"
       :key="tile.uid"
       :tile="tile"
-      :x="tile.position.x"
-      :y="tile.position.y"
-      :value="tile.value"
-      :uid="tile.uid"
-      :isMerge="tile.isMerge"
-    >
-    </BoardTileValue>
+    />
   </row>
 </template>
 
@@ -35,7 +29,7 @@ export default {
         }, acc);
       }, []);
     },
-    tileValues: function() {
+    tilesWithValue: function() {
       return this.grid.cells.reduce((acc, vector) => {
         return vector.reduce((acc, tile) => {
           tile && acc.push(tile);
