@@ -2,8 +2,8 @@
   <div id="app" v-on:keydown.left="move">
     <div class="header">
       <h1>2048</h1>
-      <Score>{{ score }}</Score>
-      <Score title="best score">{{ bestScore }}</Score>
+      <Score :value="score" />
+      <Score title="best score" :value="bestScore" />
     </div>
     <div class="instructions">
       <span>Join the numbers and get to the <b>2048 tile!</b></span>
